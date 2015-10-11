@@ -1,7 +1,7 @@
 # vim: et ts=4 sts=4 sw=4 tw=0
 
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.5)
-PROJECT(jsoncpp)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0.0)
+PROJECT(jsoncpp VERSION 0.10.5)
 ENABLE_TESTING()
 
 OPTION(JSONCPP_WITH_TESTS "Compile and (for jsoncpp_check) run JsonCpp test executables" ON)
@@ -129,44 +129,3 @@ ADD_SUBDIRECTORY( src )
 #install the includes
 ADD_SUBDIRECTORY( include )
 
-
-###############
-
-### Install ###
-# * https://github.com/forexample/package-example
-set(generated_dir "${CMAKE_CURRENT_BINARY_DIR}/generated")
-
-set(config_install_dir "lib/cmake/${PROJECT_NAME}")
-set(include_install_dir "include")
-
-set(version_config "${generated_dir}/${PROJECT_NAME}ConfigVersion.cmake")
-set(project_config "${generated_dir}/${PROJECT_NAME}Config.cmake")
-set(targets_export_name "${PROJECT_NAME}Targets")
-set(namespace "${PROJECT_NAME}::")
-
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-    "${version_config}" COMPATIBILITY SameMajorVersion
-)
-
-# Note: use 'targets_export_name'
-configure_file("cmake/Config.cmake.in" "${project_config}" @ONLY)
-
-install(
-    TARGETS spdlog
-    EXPORT "${targets_export_name}"
-    INCLUDES DESTINATION "${include_install_dir}"
-)
-
-install(DIRECTORY "include/spdlog" DESTINATION "${include_install_dir}")
-
-install(
-    FILES "${project_config}" "${version_config}"
-    DESTINATION "${config_install_dir}"
-)
-
-install(
-    EXPORT "${targets_export_name}"
-    NAMESPACE "${namespace}"
-    DESTINATION "${config_install_dir}"
-)
